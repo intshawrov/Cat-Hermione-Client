@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight, CalendarDays, ImageIcon, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -8,6 +9,8 @@ export interface EventItem {
   fullAddress: string;
   imageUrl: string;
   description: string;
+  /** Present on events fetched from the API — makes the card a link to its details page. */
+  _id?: string;
 }
 
 function formatDate(value: string) {
@@ -22,9 +25,13 @@ function formatDate(value: string) {
   });
 }
 
+const cardClasses =
+  "group flex h-full flex-col overflow-hidden rounded-xl border border-[#e5e7eb] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg";
+
 function EventCard({ event }: { event: EventItem }) {
-  return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#e5e7eb] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+  // Visual-only footer action: the whole card is the click target when linked.
+  const content = (
+    <>
       {/* Cover image */}
       <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
         {event.imageUrl ? (
@@ -70,14 +77,29 @@ function EventCard({ event }: { event: EventItem }) {
         ) : null}
 
         <div className="mt-auto pt-3">
-          <button className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0e7a55] transition-colors group-hover:text-[#0ea371]">
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0e7a55] transition-colors group-hover:text-[#0ea371]">
             View details
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-          </button>
+          </span>
         </div>
       </div>
-    </article>
+    </>
   );
+
+  // With an id the whole card is one link (client-side navigation, prefetch,
+  // middle-click/new-tab all work); without one it stays a plain card.
+  if (event._id) {
+    return (
+      <Link
+        href={`/events/${event._id}`}
+        className={`${cardClasses} block cursor-pointer outline-none focus-visible:border-[#0ea371]/60 focus-visible:ring-3 focus-visible:ring-[#0ea371]/20`}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return <article className={cardClasses}>{content}</article>;
 }
 
 export { EventCard };

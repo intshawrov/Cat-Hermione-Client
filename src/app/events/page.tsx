@@ -42,7 +42,7 @@ const AllEvents = async () => {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {events.map((event, index) => (
-              <EventCard key={index} event={event} />
+              <EventCard key={event._id ?? index} event={event} />
             ))}
           </div>
         )}

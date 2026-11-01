@@ -3,6 +3,7 @@
 import { CalendarDays, LogIn, Menu, Moon, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,23 +13,23 @@ export function Navbar() {
       {/* Desktop bar */}
       <div className="mx-auto hidden h-16 w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:flex">
         {/* Logo */}
-        <div className="flex items-center gap-8">
-          <div className="flex items-center gap-2">
-            <span className="grid size-7 place-items-center rounded-lg bg-green-800">
-              <span className="size-3.5 rounded-full border-2 border-white" />
-            </span>
-            <span className="text-xl font-bold text-[#18202d]">ImpactBD</span>
-          </div>
-        </div>
+        <Link href="/" className="flex items-center gap-2">
+          <span className="grid size-7 place-items-center rounded-lg bg-green-800">
+            <span className="size-3.5 rounded-full border-2 border-white" />
+          </span>
+          <span className="text-lg font-bold tracking-tight text-[#18202d]">
+            ImpactBD
+          </span>
+        </Link>
 
         {/* Center nav link */}
-        <a
-          href="#upcoming-events"
+        <Link
+          href="/events"
           className="flex items-center gap-2 text-sm font-semibold text-[#55606e] hover:text-green-800"
         >
           <CalendarDays className="size-4" />
           Upcoming Events
-        </a>
+        </Link>
 
         {/* Actions */}
         <div className="flex items-center gap-3">
