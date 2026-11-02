@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 
 const DeleteEvent = ({ eventId }: { eventId: string }) => {
-    const handleEventDelete = async()=>{
+    const router = useRouter();
+    const handleEventDelete = async () => {
         const res = await fetch(`http://localhost:8000/events/${eventId}`, {
             method: "DELETE",
         });
@@ -24,7 +25,8 @@ const DeleteEvent = ({ eventId }: { eventId: string }) => {
 
         console.log(data);
 
-        redirect("/events");
+        router.push("/events");
+        router.refresh();
     }
     return (
         <div>
