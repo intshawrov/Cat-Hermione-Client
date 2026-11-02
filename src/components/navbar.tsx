@@ -4,9 +4,31 @@ import { CalendarDays, LogIn, Menu, Moon, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log("User:", user);
+
+  const handleSignOut = async () => {
+    try {
+      await authClient.signOut();
+      console.log("User signed out successfully");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#18202d14] bg-white font-sans">
@@ -40,10 +62,66 @@ export function Navbar() {
           >
             <Moon className="size-4" />
           </button>
-          <Button className="h-10 gap-2 rounded-full bg-[#22b35a] px-6 text-sm font-semibold text-white hover:bg-[#175c35]">
-            <LogIn data-icon="size-4 shrink-0" />
-            Login
-          </Button>
+
+
+          {user ? <Popover>
+            <PopoverTrigger
+              render={
+                <Avatar>
+                  <AvatarImage src={user?.image} />
+                  <AvatarFallback className="bg-[#22b35a] text-white">
+                    {user?.name?.toUpperCase().charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              }
+            >
+              Open Popover
+            </PopoverTrigger>
+
+            <PopoverContent className="w-64">
+              <PopoverHeader>
+                <PopoverTitle>{user?.name}</PopoverTitle>
+                <PopoverDescription>
+                  {user?.email}
+                </PopoverDescription>
+              </PopoverHeader>
+
+              <div className="flex flex-col gap-2 py-3">
+                <Link
+                  href="/create-event"
+                  className="rounded-md px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Create Event
+                </Link>
+
+                <Link
+                  href="/manage-events"
+                  className="rounded-md px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Manage Events
+                </Link>
+
+                <Link
+                  href="/joined-events"
+                  className="rounded-md px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Joined Events
+                </Link>
+              </div>
+
+              <div className="border-t pt-3">
+                <Button onClick={handleSignOut} variant="outline" className="w-full">
+                  Sign Out
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover> : <><Link href="/sign-in">
+            <Button className="h-10 gap-2 rounded-full bg-[#22b35a] px-6 text-sm font-semibold text-white hover:bg-[#175c35]">
+              <LogIn data-icon="size-4 shrink-0" />
+              Login
+            </Button>
+          </Link></>}
+
         </div>
       </div>
 
@@ -59,7 +137,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-   
+
           <button
             type="button"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
