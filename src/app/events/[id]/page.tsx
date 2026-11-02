@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
     ArrowLeft,
     CalendarDays,
+    Delete,
     ImageIcon,
     MapPin,
     Share2,
@@ -11,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import EditEvent from "@/components/editEvent";
+import DeleteEvent from "@/components/deleteEvent";
 
 interface EventDetails {
     _id: string;
@@ -66,7 +68,10 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ id: string }> })
                         Back to all events
                     </Link>
 
-                    <EditEvent event={event} />
+                   <div className="flex gap-2">
+                     <EditEvent event={event} />
+                    <DeleteEvent eventId={event._id} />
+                   </div>
                 </div>
                 {/* Hero cover */}
                 <div className="relative mt-6 overflow-hidden rounded-2xl border border-[#e5e7eb] bg-zinc-100 shadow-sm">

@@ -90,13 +90,15 @@ function EditEvent({ event }: { event: EditableEvent }) {
     setSaving(true);
     setStatus(null);
 
+    const {_id, ...updatedData} = form; 
+
     try {
       const res = await fetch(`http://localhost:8000/events/${event._id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(updatedData),
       });
 
       if (!res.ok) {
