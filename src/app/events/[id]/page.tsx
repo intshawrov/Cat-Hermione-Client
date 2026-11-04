@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import EditEvent from "@/components/editEvent";
 import DeleteEvent from "@/components/deleteEvent";
+import JoinEvent from "@/components/join-event/JoinEvent";
 
 interface EventDetails {
     _id: string;
@@ -128,7 +129,10 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ id: string }> })
                     </div>
 
                     {/* Sidebar */}
-                    <aside className="w-full shrink-0 lg:w-88">
+
+                        <JoinEvent event={event} />
+
+                    {/* <aside className="w-full shrink-0 lg:w-88">
                         <div className="sticky top-6 rounded-2xl border border-[#e5e7eb] bg-white p-6 shadow-sm">
                             <Badge
                                 variant="outline"
@@ -178,7 +182,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ id: string }> })
                                 Free to join — no account needed to browse.
                             </p>
                         </div>
-                    </aside>
+                    </aside> */}
                 </div>
             </div>
         </section>
