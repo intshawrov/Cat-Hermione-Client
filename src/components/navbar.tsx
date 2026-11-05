@@ -88,7 +88,7 @@ export function Navbar() {
 
               <div className="flex flex-col gap-2 py-3">
                 <Link
-                  href="/create-event"
+                  href="/creat-event"
                   className="rounded-md px-3 py-2 text-sm hover:bg-gray-100"
                 >
                   Create Event
