@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, LogIn, Menu, Moon, X } from "lucide-react";
+import { CalendarDays, LogIn, Menu, Moon, Ticket, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -171,6 +171,15 @@ export function Navbar() {
                 <CalendarDays className="size-4 text-green-700" />
                 Upcoming Events
               </a>
+
+              <Link
+                href="/joined-events"
+                onClick={() => setMenuOpen(false)}
+                className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
+              >
+                <Ticket className="size-4 text-green-700" />
+                Joined Events
+              </Link>
 
               <button
                 type="button"
