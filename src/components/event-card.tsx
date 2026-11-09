@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, CalendarDays, ImageIcon, MapPin } from "lucide-react";
+import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 
 export interface EventItem {
@@ -11,7 +12,20 @@ export interface EventItem {
   description: string;
   /** Present on events fetched from the API — makes the card a link to its details page. */
   _id?: string;
+  /** Creator identity stored by the create-event form. Older events have neither. */
+  creatorEmail?: string;
+  creatorName?: string;
 }
+
+type EventCardProps = {
+  event: EventItem;
+  /**
+   * Optional action bar (e.g. Edit/Delete triggers) rendered *below* the card,
+   * outside the click-to-details area. Used only on /manage-events — passing
+   * it restructures the card so buttons are never nested inside the Link.
+   */
+  actions?: ReactNode;
+};
 
 function formatDate(value: string) {
   if (!value) return "Date to be announced";
@@ -28,9 +42,8 @@ function formatDate(value: string) {
 const cardClasses =
   "group flex h-full flex-col overflow-hidden rounded-xl border border-[#e5e7eb] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg";
 
-function EventCard({ event }: { event: EventItem }) {
-  // Visual-only footer action: the whole card is the click target when linked.
-  const content = (
+function EventCardContent({ event }: { event: EventItem }) {
+  return (
     <>
       {/* Cover image */}
       <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
@@ -85,21 +98,38 @@ function EventCard({ event }: { event: EventItem }) {
       </div>
     </>
   );
+}
 
-  // With an id the whole card is one link (client-side navigation, prefetch,
-  // middle-click/new-tab all work); without one it stays a plain card.
-  if (event._id) {
+function EventCard({ event, actions }: EventCardProps) {
+  // The whole card is the click target when linked (client-side navigation,
+  // prefetch, middle-click/new-tab all work); without an id it stays a
+  // plain card.
+  const linkedCard = event._id ? (
+    <Link
+      href={`/events/${event._id}`}
+      className={`${cardClasses} block cursor-pointer outline-none focus-visible:border-[#0ea371]/60 focus-visible:ring-3 focus-visible:ring-[#0ea371]/20`}
+    >
+      <EventCardContent event={event} />
+    </Link>
+  ) : (
+    <article className={cardClasses}>
+      <EventCardContent event={event} />
+    </article>
+  );
+
+  // With an action bar (manage-events), the interactive row must sit OUTSIDE
+  // the link/dialog markup, so the card is composed as: linkable visual card
+  // + separate actions row. Without actions the existing layout is unchanged.
+  if (actions) {
     return (
-      <Link
-        href={`/events/${event._id}`}
-        className={`${cardClasses} block cursor-pointer outline-none focus-visible:border-[#0ea371]/60 focus-visible:ring-3 focus-visible:ring-[#0ea371]/20`}
-      >
-        {content}
-      </Link>
+      <div className="flex h-full flex-col gap-2.5">
+        {linkedCard}
+        <div className="flex gap-2">{actions}</div>
+      </div>
     );
   }
 
-  return <article className={cardClasses}>{content}</article>;
+  return linkedCard;
 }
 
 export { EventCard };

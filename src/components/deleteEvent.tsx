@@ -15,7 +15,14 @@ import { Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
-const DeleteEvent = ({ eventId }: { eventId: string }) => {
+interface DeleteEventProps {
+    eventId: string;
+    /** Optional callback — replaces the default redirect to /events with a
+     * caller-provided refresh (used by /manage-events). */
+    onDeleted?: () => void;
+}
+
+const DeleteEvent = ({ eventId, onDeleted }: DeleteEventProps) => {
     const router = useRouter();
     const handleEventDelete = async () => {
         const res = await fetch(`http://localhost:8000/events/${eventId}`, {
@@ -25,7 +32,13 @@ const DeleteEvent = ({ eventId }: { eventId: string }) => {
 
         console.log(data);
 
-        router.push("/events");
+        if (onDeleted) {
+            // Stay on the calling page and let it re-fetch its list.
+            onDeleted();
+        } else {
+            router.push("/events");
+        }
+
         router.refresh();
     }
     return (

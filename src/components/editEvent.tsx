@@ -25,7 +25,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-interface EditableEvent {
+export interface EditableEvent {
   eventName: string;
   category: string;
   eventDate: string;
@@ -67,7 +67,14 @@ function RequiredLabel({ children }: { children: string }) {
   );
 }
 
-function EditEvent({ event }: { event: EditableEvent }) {
+interface EditEventProps {
+  event: EditableEvent;
+  /** Optional callback fired after a successful save — lets client-fetched
+   * lists (e.g. /manage-events) re-fetch and show fresh data. */
+  onSaved?: () => void;
+}
+
+function EditEvent({ event, onSaved }: EditEventProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormState>(() => toForm(event));
@@ -109,6 +116,8 @@ function EditEvent({ event }: { event: EditableEvent }) {
 
       // Re-render server components (event details) with fresh data.
       router.refresh();
+      // Let client-fetched lists refresh themselves if a callback was given.
+      onSaved?.();
       setStatus("saved");
       setOpen(false);
     } catch (err) {

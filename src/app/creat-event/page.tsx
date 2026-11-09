@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowRightIcon } from "lucide-react";
 
 import { cn } from "cn";
+import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,6 +55,8 @@ export default function ProtectedCreatEvent() {
 
 function CreatEvent() {
   const [form, setForm] = useState(initialForm);
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -75,7 +78,12 @@ function CreatEvent() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify({
+        ...form,
+        // Ownership marker — /manage-events filters events by this field.
+        creatorEmail: user?.email,
+        creatorName: user?.name ?? "",
+      }),
     });
 
     const data = await res.json();
