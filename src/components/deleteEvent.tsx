@@ -31,10 +31,10 @@ const DeleteEvent = ({ eventId }: { eventId: string }) => {
     return (
         <div>
             <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <Button variant="outline">
-                        Delete Event
-                    </Button>
+                <AlertDialogTrigger
+                    render={<Button variant="outline" />}
+                >
+                    Delete Event
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

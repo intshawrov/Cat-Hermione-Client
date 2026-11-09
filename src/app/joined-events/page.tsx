@@ -6,6 +6,7 @@ import { Ticket, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EventCard, type EventItem } from "@/components/event-card";
 import { authClient } from "@/lib/auth-client";
+import { PrivateRoute } from "@/components/private-route";
 
 /** Shape of a document saved by POST /join-event in JoinEvent.tsx. */
 interface JoinedEvent extends Omit<EventItem, "_id"> {
@@ -16,12 +17,11 @@ interface JoinedEvent extends Omit<EventItem, "_id"> {
     _id: string;
 }
 
-const JoinedEventsPage = () => {
+function JoinedEventsContent() {
 
-    const { data: session, isPending } = authClient.useSession();
+    const { data: session } = authClient.useSession();
     const user = session?.user;
 
-    // `useremail` never changes for a session, so this fetch stays stable.
     const [joinedEvents, setJoinedEvents] = useState<JoinedEvent[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -87,33 +87,7 @@ const JoinedEventsPage = () => {
                     </p>
                 </div>
 
-                {/* Session still loading */}
-                {isPending ? (
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {[...Array(3)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="h-80 animate-pulse rounded-xl border border-[#e5e7eb] bg-white"
-                            />
-                        ))}
-                    </div>
-                ) : !user ? (
-                    /* Not logged in */
-                    <div className="rounded-xl border border-dashed border-[#e5e7eb] bg-white px-6 py-20 text-center">
-                        <Ticket className="mx-auto size-10 text-[#9ca3af]" strokeWidth={1.5} />
-                        <h2 className="font-heading mt-4 text-lg font-semibold text-[#18202d]">
-                            Please sign in
-                        </h2>
-                        <p className="mt-1 text-sm text-[#6b7280]">
-                            Sign in to see the events you have joined.
-                        </p>
-                        <Link href="/sign-in" className="mt-6 inline-block">
-                            <Button className="h-11 gap-2 rounded-full bg-[#22b35a] px-6 text-sm font-semibold text-white hover:bg-[#175c35]">
-                                Login
-                            </Button>
-                        </Link>
-                    </div>
-                ) : error ? (
+                {error ? (
                     /* Fetch failed */
                     <div className="rounded-xl border border-dashed border-[#e5e7eb] bg-white px-6 py-20 text-center">
                         <ImageIcon className="mx-auto size-10 text-[#9ca3af]" strokeWidth={1.5} />
@@ -123,7 +97,7 @@ const JoinedEventsPage = () => {
                         <p className="mt-1 text-sm text-[#6b7280]">{error}</p>
                     </div>
                 ) : joinedEvents === null ? (
-                    /* Session ready, join list still loading */
+                    /* Join list still loading */
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {[...Array(3)].map((_, i) => (
                             <div
@@ -133,7 +107,7 @@ const JoinedEventsPage = () => {
                         ))}
                     </div>
                 ) : joinedEvents.length === 0 ? (
-                    /* Logged in, nothing joined yet */
+                    /* No joined events yet */
                     <div className="rounded-xl border border-dashed border-[#e5e7eb] bg-white px-6 py-20 text-center">
                         <Ticket className="mx-auto size-10 text-[#9ca3af]" strokeWidth={1.5} />
                         <h2 className="font-heading mt-4 text-lg font-semibold text-[#18202d]">
@@ -170,6 +144,12 @@ const JoinedEventsPage = () => {
             </div>
         </section>
     );
-};
+}
 
-export default JoinedEventsPage;
+export default function JoinedEventsPage() {
+    return (
+        <PrivateRoute>
+            <JoinedEventsContent />
+        </PrivateRoute>
+    );
+}

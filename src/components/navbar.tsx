@@ -68,7 +68,7 @@ export function Navbar() {
             <PopoverTrigger
               render={
                 <Avatar>
-                  <AvatarImage src={user?.image} />
+                  <AvatarImage src={user?.image ?? undefined} />
                   <AvatarFallback className="bg-[#22b35a] text-white">
                     {user?.name?.toUpperCase().charAt(0)}
                   </AvatarFallback>
@@ -172,14 +172,16 @@ export function Navbar() {
                 Upcoming Events
               </a>
 
-              <Link
-                href="/joined-events"
-                onClick={() => setMenuOpen(false)}
-                className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
-              >
-                <Ticket className="size-4 text-green-700" />
-                Joined Events
-              </Link>
+              {user && (
+                <Link
+                  href="/joined-events"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
+                >
+                  <Ticket className="size-4 text-green-700" />
+                  Joined Events
+                </Link>
+              )}
 
               <button
                 type="button"

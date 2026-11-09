@@ -90,7 +90,9 @@ function EditEvent({ event }: { event: EditableEvent }) {
     setSaving(true);
     setStatus(null);
 
-    const {_id, ...updatedData} = form; 
+    // The form never contains the event's `_id`, so the PATCH body is safe
+    // to send as-is (the id goes in the URL).
+    const updatedData = { ...form };
 
     try {
       const res = await fetch(`http://localhost:8000/events/${event._id}`, {

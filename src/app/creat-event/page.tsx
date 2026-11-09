@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PrivateRoute } from "@/components/private-route";
 
 const EVENT_CATEGORIES = [
   "Environment",
@@ -43,7 +44,15 @@ const initialForm = {
   description: "",
 };
 
-export default function CreatEvent() {
+export default function ProtectedCreatEvent() {
+  return (
+    <PrivateRoute>
+      <CreatEvent />
+    </PrivateRoute>
+  );
+}
+
+function CreatEvent() {
   const [form, setForm] = useState(initialForm);
 
   const handleChange = (

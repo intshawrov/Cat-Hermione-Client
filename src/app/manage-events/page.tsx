@@ -1,11 +1,19 @@
-import React from 'react';
+"use client";
 
-const JoinManagementPage = () => {
+import { PrivateRoute } from "@/components/private-route";
+
+function JoinManagementContent() {
     return (
         <div>
             hello
         </div>
     );
-};
+}
 
-export default JoinManagementPage;
+export default function JoinManagementPage() {
+    return (
+        <PrivateRoute>
+            <JoinManagementContent />
+        </PrivateRoute>
+    );
+}

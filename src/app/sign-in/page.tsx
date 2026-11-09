@@ -34,7 +34,13 @@ export default function SingInPage() {
         console.log(user);
 
         if (data) {
-            redirect("/");
+            // Send users back to the private page that ?redirect= points to.
+            // Safeguard: only follow internal paths, never absolute URLs.
+            const requested =
+                new URLSearchParams(window.location.search)
+                    .get("redirect") ?? "/";
+
+            redirect(requested.startsWith("/") ? requested : "/");
         }
 
         if (error) {
