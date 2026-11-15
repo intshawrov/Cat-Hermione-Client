@@ -30,15 +30,8 @@ function Banner() {
               <ArrowRight data-icon="inline-end" />
             </Button>
           </Link>
-          <Link href="/sign-up">
-            <Button className="h-11 rounded-lg border-[#e5e7eb] bg-white px-5 text-sm font-semibold text-[#18202d] hover:bg-zinc-100">
-              Sign up your Organization
-            </Button>
-          </Link>
         </div>
-        <p className="mt-4 text-sm text-[#6b7280]">
-          No account needed to browse.
-        </p>
+        
       </div>
     </section>
   );
