@@ -5,6 +5,7 @@ import {
   CalendarPlus,
   Compass,
   ImageIcon,
+  Quote,
   TicketCheck,
   Users,
 } from "lucide-react";
@@ -12,6 +13,12 @@ import {
 import { Banner } from "@/components/banner";
 import { EventCard, type EventItem } from "@/components/event-card";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 /* ------------------------------------------------------------------ */
 /* Shared bits                                                         */
@@ -246,6 +253,86 @@ async function HomeEventSections() {
           )}
         </div>
       </section>
+
+      {/* Testimonials — static content */}
+      <section className="border-t border-[#e5e7eb] bg-white">
+        <div className="mx-auto w-full max-w-[1440px] px-4 py-16 sm:px-6">
+          <SectionHeader
+            eyebrow="Voices of impact"
+            title="What the community says"
+            subtitle="Organizers and volunteers share what it's like to run and join events on UnityPulse."
+          />
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {TESTIMONIALS.map((testimonial) => (
+              <figure
+                key={testimonial.name}
+                className="flex h-full flex-col rounded-xl border border-[#e5e7eb] bg-white p-6 shadow-sm"
+              >
+                <Quote className="size-6 text-[#0ea371]/40" strokeWidth={1.5} />
+                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-[#4b5563]">
+                  {testimonial.quote}
+                </blockquote>
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-[#f3f4f6] pt-4">
+                  <span
+                    className={`flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ${testimonial.avatarClass}`}
+                  >
+                    {testimonial.initials}
+                  </span>
+                  <div>
+                    <p className="font-heading text-sm font-semibold text-[#18202d]">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-xs text-[#6b7280]">{testimonial.role}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ — static content */}
+      <section
+        style={{
+          background:
+            "radial-gradient(50% 40% at 90% 0%, rgba(14, 163, 113, .08) 0%, rgba(14, 163, 113, 0) 70%), var(--paper)",
+        }}
+      >
+        <div className="mx-auto w-full max-w-[1440px] px-4 py-16 sm:px-6">
+          <SectionHeader
+            eyebrow="Need help?"
+            title="Frequently asked questions"
+            subtitle="Quick answers about joining, creating and managing events on UnityPulse."
+          />
+
+          <div className="mx-auto max-w-3xl rounded-xl border border-[#e5e7eb] bg-white px-6 py-4 shadow-sm">
+            <Accordion>
+              {FAQS.map((faq) => (
+                <AccordionItem key={faq.question} value={faq.question}>
+                  <AccordionTrigger className="font-heading text-base font-semibold text-[#18202d] hover:no-underline">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#4b5563]">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+
+          <p className="mt-6 text-center text-sm text-[#6b7280]">
+            Still have questions?{" "}
+            <Link
+              href="/sign-up"
+              className="font-semibold text-[#0e7a55] underline-offset-4 hover:underline"
+            >
+              Create an account
+            </Link>{" "}
+            and reach out to event organizers directly.
+          </p>
+        </div>
+      </section>
     </>
   );
 }
@@ -302,5 +389,65 @@ const FEATURES = [
     title: "Community Powered",
     description:
       "Connect with thousands of active changemakers and grow your impact together, from Dhaka to Sylhet.",
+  },
+] as const;
+
+const TESTIMONIALS = [
+  {
+    quote:
+      "Organizing our winter warmth drive used to mean juggling phone calls and Facebook posts. With UnityPulse we published the event in minutes and volunteers signed up the same evening.",
+    name: "Rafiq Ahmed",
+    role: "Organizer · Winter Warmth Drive, Dhaka",
+    initials: "RA",
+    avatarClass: "bg-[#0ea371]/10 text-[#0e7a55]",
+  },
+  {
+    quote:
+      "I found an emergency blood donation camp two streets away from my university. One click to join — no paperwork, no waiting. It is the easiest way I have ever volunteered.",
+    name: "Nusrat Jahan",
+    role: "Volunteer · Blood Donation Camp, Chittagong",
+    initials: "NJ",
+    avatarClass: "bg-[#e0662f]/10 text-[#c2551f]",
+  },
+  {
+    quote:
+      "As a student coordinator, the manage dashboard is a lifesaver. I can update the venue or date of our tree plantation events whenever plans change, and everyone sees the latest details.",
+    name: "Tanvir Hasan",
+    role: "Student Coordinator · Tree Plantation, Sylhet",
+    initials: "TH",
+    avatarClass: "bg-[#0ea371]/10 text-[#0e7a55]",
+  },
+] as const;
+
+const FAQS = [
+  {
+    question: "Do I need an account to browse events?",
+    answer:
+      "No — anyone can browse all upcoming and past events without an account. You only need to sign in when you want to join an event or create your own.",
+  },
+  {
+    question: "How do I join an event?",
+    answer:
+      "Open the event's details page and hit Join Event. Your name and email are saved with the event, and it instantly appears on your Joined Events page so you never lose track of it.",
+  },
+  {
+    question: "How do I create my own event?",
+    answer:
+      "Sign in, go to the Create Event page, and fill in the name, category, date, venue, cover image and description. Once submitted, your event is published for the whole community to discover.",
+  },
+  {
+    question: "Can I edit or delete an event I created?",
+    answer:
+      "Yes. Every event you create appears on your Manage Events dashboard, where you can update the details or remove the event entirely at any time.",
+  },
+  {
+    question: "Does it cost anything to use UnityPulse?",
+    answer:
+      "No. Discovering, joining and organizing community events on UnityPulse is completely free for volunteers and organizers.",
+  },
+  {
+    question: "Do all events get published instantly?",
+    answer:
+      "Events created through the platform may require a quick admin approval before they appear publicly, which keeps the feed safe and relevant for everyone.",
   },
 ] as const;
