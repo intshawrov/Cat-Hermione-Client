@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, LogIn, Menu, Moon, Ticket, X } from "lucide-react";
+import { CalendarDays, CalendarPlus, LogIn, LogOut, Menu, Moon, Settings, Ticket, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -163,40 +163,72 @@ export function Navbar() {
           {/* Menu panel */}
           <div className="relative px-4 pt-1 pb-4">
             <div className="grid gap-2 rounded-xl border border-[#18202d14] bg-zinc-50 p-2 shadow-lg">
-              <a
-                href="#upcoming-events"
+              <Link
+                href="/events"
                 onClick={() => setMenuOpen(false)}
                 className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
               >
                 <CalendarDays className="size-4 text-green-700" />
                 Upcoming Events
-              </a>
+              </Link>
 
-              {user && (
-                <Link
-                  href="/joined-events"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
-                >
-                  <Ticket className="size-4 text-green-700" />
-                  Joined Events
-                </Link>
+              {user ? (
+                <>
+                  {/* Signed in — same destinations as the desktop avatar menu */}
+                  <Link
+                    href="/creat-event"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
+                  >
+                    <CalendarPlus className="size-4 text-green-700" />
+                    Create Event
+                  </Link>
+
+                  <Link
+                    href="/manage-events"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
+                  >
+                    <Settings className="size-4 text-green-700" />
+                    Manage Events
+                  </Link>
+
+                  <Link
+                    href="/joined-events"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex h-11 items-center gap-2.5 rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
+                  >
+                    <Ticket className="size-4 text-green-700" />
+                    Joined Events
+                  </Link>
+
+                  <div className="my-1 border-t border-[#18202d14]" />
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      handleSignOut();
+                    }}
+                    className="h-11 w-full rounded-full border-[#18202d14] bg-white px-5 text-sm font-semibold text-[#18202d] hover:bg-zinc-100"
+                  >
+                    <LogOut data-icon="inline-start" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <div className="my-1 border-t border-[#18202d14]" />
+
+                  <Link href="/sign-in" onClick={() => setMenuOpen(false)}>
+                    <Button className="h-11 w-full gap-2 rounded-full bg-[#1a6b3e] px-5 text-sm font-semibold text-white hover:bg-[#175c35]">
+                      <LogIn data-icon="inline-start" />
+                      Login
+                    </Button>
+                  </Link>
+                </>
               )}
-
-              <button
-                type="button"
-                className="flex h-11 items-center justify-between rounded-lg border border-[#18202d14] bg-white px-3 text-sm font-semibold text-[#18202d]"
-              >
-                Theme
-                <Moon className="size-4" />
-              </button>
-
-              <div className="my-1 border-t border-[#18202d14]" />
-
-              <Button className="h-11 w-full gap-2 rounded-full bg-[#1a6b3e] px-5 text-sm font-semibold text-white hover:bg-[#175c35]">
-                <LogIn data-icon="inline-start" />
-                Login
-              </Button>
             </div>
           </div>
         </div>
