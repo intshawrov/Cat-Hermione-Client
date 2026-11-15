@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function Banner() {
@@ -23,16 +23,19 @@ function Banner() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Button className="h-11 gap-2 rounded-lg bg-[#0e7a55] px-5 text-sm font-semibold text-white hover:bg-[#0c6a4a]">
+          <Link
+          href="/events"
+          className="h-11 gap-2 rounded-lg bg-[#0e7a55] px-5 text-sm font-semibold text-white hover:bg-[#0c6a4a]">
             Browse Events
             <ArrowRight data-icon="inline-end" />
-          </Button>
-          <Button className="h-11 rounded-lg bg-[#18202d] px-5 text-sm font-semibold text-white hover:bg-[#232c3d]">
-            Join as a Volunteer
-          </Button>
-          <Button className="h-11 rounded-lg border-[#e5e7eb] bg-white px-5 text-sm font-semibold text-[#18202d] hover:bg-zinc-50">
+          </Link>
+          
+          <Link
+            href="/sign-up"
+            className="h-11 gap-2 rounded-lg border-[#18202d14] bg-white px-5 text-sm font-semibold text-[#18202d] hover:bg-zinc-100"
+          >
             Sign up your Organization
-          </Button>
+          </Link>
         </div>
         <p className="mt-4 text-sm text-[#6b7280]">
           No account needed to browse.
