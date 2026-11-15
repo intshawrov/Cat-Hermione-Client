@@ -78,7 +78,7 @@ const JoinEvent = ({ event }: { event: EventDetails }) => {
             setLoading(true);
 
             const res = await fetch(
-                "http://localhost:8000/join-event",
+               `${process.env.NEXT_PUBLIC_API_URL}/join-event`,
                 {
                     method: "POST",
                     headers: {
