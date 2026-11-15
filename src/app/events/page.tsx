@@ -3,7 +3,9 @@ import type { EventItem } from "@/components/event-card";
 import { ImageIcon } from "lucide-react";
 
 const AllEvents = async () => {
-  const res = await fetch("http://localhost:8000/events");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
+  cache: "no-store",
+});
   const data = await res.json();
   const events: EventItem[] = Array.isArray(data) ? data : (data?.events ?? []);
   console.log(data);
