@@ -40,11 +40,16 @@ function formatDate(value: string) {
 const EventDetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
-    const res = await fetch(`http://localhost:8000/events/${id}`);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+    const res = await fetch(`${API_URL}/events/${id}`);
+
     if (!res.ok) {
         notFound();
     }
+
     const event = (await res.json()) as EventDetails;
+
     if (!event?._id) {
         notFound();
     }
