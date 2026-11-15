@@ -1,4 +1,5 @@
-import { ArrowRight, Link } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 function Banner() {
@@ -23,18 +24,16 @@ function Banner() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link
-          href="/events"
-          className="h-11 gap-2 rounded-lg bg-[#0e7a55] px-5 text-sm font-semibold text-white hover:bg-[#0c6a4a]">
-            Browse Events
-            <ArrowRight data-icon="inline-end" />
+          <Link href="/events">
+            <Button className="h-11 gap-2 rounded-lg bg-[#0e7a55] px-5 text-sm font-semibold text-white hover:bg-[#0c6a4a]">
+              Browse Events
+              <ArrowRight data-icon="inline-end" />
+            </Button>
           </Link>
-          
-          <Link
-            href="/sign-up"
-            className="h-11 gap-2 rounded-lg border-[#18202d14] bg-white px-5 text-sm font-semibold text-[#18202d] hover:bg-zinc-100"
-          >
-            Sign up your Organization
+          <Link href="/sign-up">
+            <Button className="h-11 rounded-lg border-[#e5e7eb] bg-white px-5 text-sm font-semibold text-[#18202d] hover:bg-zinc-100">
+              Sign up your Organization
+            </Button>
           </Link>
         </div>
         <p className="mt-4 text-sm text-[#6b7280]">
