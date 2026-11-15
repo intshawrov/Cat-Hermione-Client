@@ -33,7 +33,7 @@ function JoinedEventsContent() {
         const fetchJoinedEvents = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:8000/join-event/${encodeURIComponent(user.email)}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/join-event/${encodeURIComponent(user.email)}`
                 );
 
                 if (!res.ok) {
